@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react'
 import './App.css'
+import Login from './pages/Login'
+import Register from './pages/Register'
 
 function App() {
   const [products, setProducts] = useState([])
@@ -7,6 +9,8 @@ function App() {
   const [cartCount, setCartCount] = useState(0)
   const [cartItems, setCartItems] = useState([])
   const [showCart, setShowCart] = useState(false)
+  const [showLogin, setShowLogin] = useState(false)
+const [showRegister, setShowRegister] = useState(false)
 
   useEffect(() => {
     fetch('http://localhost:5000/products')
@@ -15,7 +19,12 @@ function App() {
       .catch(error => console.log(error))
   }, [])
 const addToCart = (product) => {
-  setCartItems(prevItems => [...prevItems, product])
+  const productWithQuantity = {
+    ...product,
+    quantity: 1
+  }
+
+  setCartItems(prevItems => [...prevItems, productWithQuantity])
   setCartCount(prevCount => prevCount + 1)
 }
 const removeFromCart = (index) => {
@@ -46,6 +55,27 @@ const decreaseQuantity = (index) => {
     <div>
     <nav className="navbar">
   <h2>ShopKart 🛒</h2>
+  <button
+    className="auth-button"
+    onClick={() => {
+      setShowLogin(true)
+      setShowRegister(false)
+      setShowCart(false)
+    }}
+  >
+    Login 🔐
+  </button>
+
+  <button
+    className="auth-button"
+    onClick={() => {
+      setShowRegister(true)
+      setShowLogin(false)
+      setShowCart(false)
+    }}
+  >
+    Register 📝
+  </button>
 
   <button
   className="cart-button"
@@ -54,11 +84,16 @@ const decreaseQuantity = (index) => {
   🛒 Cart <span>{cartCount}</span>
 </button>
 </nav>
+{showLogin && <Login />}
+{showRegister && <Register />}
 {showCart && (
   <div className="cart-section">
     <h2>Your Cart 🛒</h2>
     <p className="cart-total">
-  Total: ₹{cartItems.reduce((total, item) => total + item.price, 0)}
+  Total: ₹{cartItems.reduce(
+  (total, item) => total + item.price * (item.quantity || 1),
+  0
+)}
 </p>
 
     {cartItems.length === 0 ? (
