@@ -11,6 +11,8 @@ function App() {
   const [showCart, setShowCart] = useState(false)
   const [showLogin, setShowLogin] = useState(false)
   const [showRegister, setShowRegister] = useState(false)
+  const [orders, setOrders] = useState([])
+const [showOrders, setShowOrders] = useState(false)
 
   const [user, setUser] = useState(
     JSON.parse(localStorage.getItem('user'))
@@ -194,8 +196,89 @@ const decreaseQuantity = (index) => {
       console.log("Quantity Decrease Error:", error)
     })
 }
-  
 
+ const handleCheckout = async () => {
+  const token = localStorage.getItem("token")
+
+  if (!token) {
+    alert("Please login first")
+    return
+  }
+
+  if (cartItems.length === 0) {
+    alert("Your cart is empty")
+    return
+  }
+
+  const orderData = {
+    items: cartItems.map(item => ({
+      productId: item._id,
+      quantity: item.quantity || 1,
+      price: item.price
+    })),
+    totalAmount: cartItems.reduce(
+      (total, item) => total + item.price * (item.quantity || 1),
+      0
+    )
+  }
+
+  try {
+    const response = await fetch("http://localhost:5000/orders", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`
+      },
+      body: JSON.stringify(orderData)
+    })
+
+    const data = await response.json()
+
+    console.log("Order Response:", data)
+
+    if (response.ok) {
+      alert("Order placed successfully 🎉")
+    } else {
+      alert(data.message)
+    }
+  } catch (error) {
+    console.log("Order Error:", error)
+  }
+} 
+const fetchOrders = async () => {
+  const token = localStorage.getItem("token")
+
+  if (!token) {
+    alert("Please login first")
+    return
+  }
+
+  try {
+    const response = await fetch(
+      `http://localhost:5000/orders/${user.id}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }
+    )
+
+    const data = await response.json()
+
+    console.log("Orders Response:", data)
+
+    if (response.ok) {
+      setOrders(data)
+      setShowOrders(true)
+      setShowCart(false)
+    } else {
+      alert(data.message)
+    }
+  } catch (error) {
+    console.log("Orders Error:", error)
+  }
+}
+  
   return (
     <div>
       <nav className="navbar">
@@ -239,6 +322,14 @@ const decreaseQuantity = (index) => {
             </button>
           </>
         )}
+        {user && (
+  <button
+    className="auth-button"
+    onClick={fetchOrders}
+  >
+    📦 My Orders
+  </button>
+)}
 
         <button
           className="cart-button"
@@ -263,7 +354,12 @@ const decreaseQuantity = (index) => {
               0
             )}
           </p>
-
+<button
+  className="checkout-button"
+  onClick={handleCheckout}
+>
+  Proceed to Checkout 🛍️
+</button>
           {cartItems.length === 0 ? (
             <p>Your cart is empty.</p>
           ) : (
@@ -305,6 +401,37 @@ const decreaseQuantity = (index) => {
           )}
         </div>
       )}
+      {showOrders && (
+  <div className="orders-section">
+    <h2>📦 My Orders</h2>
+
+    {orders.length === 0 ? (
+      <p>No orders found.</p>
+    ) : (
+      orders.map((order) => (
+        <div className="order-card" key={order._id}>
+          <h3>Order ID: {order._id}</h3>
+
+          <p>
+            <strong>Status:</strong> {order.status}
+          </p>
+
+          <p>
+            <strong>Total:</strong> ₹{order.totalAmount}
+          </p>
+
+          <h4>Items:</h4>
+
+          {order.items.map((item) => (
+            <p key={item._id}>
+              {item.productId?.name} × {item.quantity}
+            </p>
+          ))}
+        </div>
+      ))
+    )}
+  </div>
+)}
 
       <h1>E-Commerce Store 🛒</h1>
 

@@ -23,6 +23,7 @@ function Register() {
       .then(data => {
         console.log('Register Response:', data)
       })
+      console.log("Register Message:", data.message)
       .catch(error => {
         console.log('Register Error:', error)
       })

@@ -160,3 +160,167 @@ h1 {
   font-weight: bold;
   color: #e63946;
 }
+/* =========================
+   MY ORDERS - PROFESSIONAL UI
+========================= */
+
+.orders-section {
+  max-width: 1100px;
+  margin: 45px auto;
+  padding: 0 25px 40px;
+}
+
+.orders-section > h2 {
+  font-size: 32px;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 35px;
+}
+
+/* Order Card */
+
+.order-card {
+  background: #fff;
+  border: 1px solid #e8e8e8;
+  border-radius: 16px;
+  padding: 26px 30px;
+  margin-bottom: 25px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+}
+
+/* Order ID */
+
+.order-card h3 {
+  font-size: 17px;
+  color: #333;
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #eee;
+  word-break: break-all;
+}
+
+/* Status + Total */
+
+.order-card > p {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #f8f9fa;
+  padding: 12px 15px;
+  border-radius: 8px;
+  margin: 10px 0;
+}
+
+.order-card > p strong {
+  color: #333;
+}
+
+/* Status */
+
+.order-card > p:first-of-type {
+  color: #d97706;
+  font-weight: 600;
+}
+
+/* Total */
+
+.order-card > p:nth-of-type(2) {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+/* Items Heading */
+
+.order-card h4 {
+  margin-top: 25px;
+  margin-bottom: 12px;
+  font-size: 19px;
+}
+
+/* Individual Items */
+
+.order-card h4 ~ p {
+  background: #fafafa;
+  border: 1px solid #eee;
+  padding: 11px 15px;
+  border-radius: 8px;
+  margin: 8px 0;
+  font-size: 15px;
+}
+
+/* Hover */
+
+.order-card {
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.order-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+}
+
+/* Empty Orders */
+
+.orders-section > p {
+  text-align: center;
+  padding: 40px;
+  color: #777;
+  font-size: 17px;
+}
+
+/* Mobile */
+
+@media (max-width: 600px) {
+  .orders-section {
+    padding: 0 15px 30px;
+  }
+
+  .orders-section > h2 {
+    font-size: 26px;
+  }
+
+  .order-card {
+    padding: 20px;
+  }
+
+  .order-card > p {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 5px;
+  }
+}
+/* Login / Register Form */
+
+.auth-box input {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.password-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.password-wrapper input {
+  width: 100%;
+  padding-right: 50px;
+}
+
+.password-toggle {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: auto !important;
+  padding: 5px 8px !important;
+  background: transparent !important;
+  border: none !important;
+  cursor: pointer;
+  font-size: 18px;
+}
+.auth-box {
+  width: 360px;
+  max-width: 90%;
+  margin: 40px auto;
+  padding: 25px;
+}

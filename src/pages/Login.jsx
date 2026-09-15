@@ -3,6 +3,7 @@ import { useState } from 'react'
 function Login() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [showPassword, setShowPassword] = useState(false)
 
   const handleLogin = (e) => {
 e.preventDefault()
@@ -45,13 +46,23 @@ fetch('http://localhost:5000/users/login', {
             required
           />
 
-          <input
-            type="password"
-            placeholder="Enter password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
+          <div className="password-wrapper">
+  <input
+    type={showPassword ? 'text' : 'password'}
+    placeholder="Enter password"
+    value={password}
+    onChange={(e) => setPassword(e.target.value)}
+    required
+  />
+
+  <button
+  type="button"
+  className="password-toggle"
+  onClick={() => setShowPassword(!showPassword)}
+>
+  &#128065;
+</button>
+</div>
 
           <button type="submit">
             Login
